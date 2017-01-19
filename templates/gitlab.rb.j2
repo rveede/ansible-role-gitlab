@@ -40,5 +40,18 @@ nginx['listen_port'] = "{{ gitlab_nginx_listen_port }}"
 nginx['listen_https'] = "{{ gitlab_nginx_listen_https }}"
 {% endif %}
 
+
+# Gitlab Registry
+## See https://gitlab.com/help/administration/container_registry.md
+{% if gitlab_registry_external_url is defined %}
+registry_external_url "{{ gitlab_registry_external_url }}"
+{% if gitlab_registry_ssl_certificate is defined %}
+registry_nginx['ssl_certificate'] = "{{ gitlab_registry_ssl_certificate }}"
+registry_nginx['ssl_certificate_key'] = "{{ gitlab_registry_ssl_certificate_key }}"
+{% else %}
+registry_nginx['ssl_certificate'] = "{{ gitlab_ssl_certificate }}"
+registry_nginx['ssl_certificate_key'] = "{{ gitlab_ssl_certificate_key }}"
+{% endif %}
+
 # To change other settings, see:
 # https://gitlab.com/gitlab-org/omnibus-gitlab/blob/master/README.md#changing-gitlab-yml-settings
